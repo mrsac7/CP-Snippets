@@ -1,0 +1,38 @@
+<snippet>
+	<content><![CDATA[
+
+struct SUM {
+    /* 1-based prefix sum */
+    vector<int> e, pm, pM, sm, sM; int N;
+
+    SUM(vector<int> &v) { N = v.size(); e.resize(N + 1); init(v); }
+
+    void init(vector<int> &v) { 
+        for (int i = 1; i <= N; i++) e[i] = e[i - 1] + v[i - 1]; 
+        /* pm.resize(N + 1); pM.resize(N + 1);
+        pm[1] = pM[1] = v[0];
+        sm.resize(N + 1); sM.resize(N + 1);
+        sm[N] = sM[N] = v[N - 1];
+        for (int i = 2, j = N - 1; i <= N; i++, j--) {
+            pm[i] = min(pm[i - 1], v[i - 1]);
+            pM[i] = max(pM[i - 1], v[i - 1]);
+            sm[j] = min(sm[j + 1], v[j - 1]);
+            sM[j] = max(sM[j + 1], v[j - 1]);
+        } */
+    }
+    
+    int sum(int l, int r) { return e[min(r, N)] - e[max(1LL, l) - 1]; }
+    int sum(int k) { return e[max(min(k, N), 0LL)]; }
+    /* int ssum(int k) { return e[N] - e[max(1LL, k) - 1]; }
+    int pmin(int k) { return pm[min(k, N)]; }
+    int pmax(int k) { return pM[min(k, N)]; }
+    int smin(int k) { return sm[max(k, 1LL)]; }
+    int smax(int k) { return sM[max(k, 1LL)]; } */
+};
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>prefixsum</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

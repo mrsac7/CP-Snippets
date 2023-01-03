@@ -1,0 +1,24 @@
+<snippet>
+	<content><![CDATA[
+
+struct BIT {
+    /* 1-based indexing. Point Update and Range Query*/
+    int N; vector<int> bit;
+
+    BIT(int _N) { N = _N; bit.resize(N + 1); }
+
+    void assign(int k, int x) { for (x -= sum(k)-sum(k-1); k <= N; k += k&-k) bit[k] += x; }
+
+    void add(int k, int x) { for (; k <= N; k += k&-k) bit[k] += x; }
+
+    int sum(int k) { int s = 0; for (; k > 0; k -= k&-k) s += bit[k]; return s; }
+
+    int query(int l, int r) { return sum(r) - sum(l - 1); }
+};
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>bit</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

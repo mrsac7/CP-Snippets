@@ -1,0 +1,52 @@
+<snippet>
+	<content><![CDATA[
+
+struct SEGMAX {
+	/* 0-based indexing. Modify `DEF`, `lazy`, `pull`, `query` methods to support custom function*/
+	struct node { int mx, lz, as, ok; }; int SZ; vector<node> e;
+	const static int DEF = -1 << 30; 
+
+	SEGMAX(int _N) { SZ = 1 << (int) ceil(log2(_N)); e.resize(2 * SZ); }
+
+	void init(int v = DEF) { for (int i = 0; i < 2 * SZ; i++) e[i].mx = v; }
+
+	void lazy(int k, int h, int v) { 
+		auto &[mx, lz, as, ok] = e[k]; mx += v, lz += v; 
+	}
+	void push(int k, int l, int r) {
+		if (e[k].ok) {e[k<<1] = e[k<<1|1] = e[k]; e[k].ok = 0;}
+		if (e[k].lz) {int h = (r-l+1) >> 1; lazy(k<<1, h, e[k].lz); lazy(k<<1|1, h, e[k].lz); e[k].lz = 0;}
+	}
+	void pull(int k) { e[k].mx = max(e[k<<1].mx, e[k<<1|1].mx); }
+
+	void assign(int a, int b, int v, int k, int l, int r) {
+		if (l > b || r < a) return;
+	    if (l >= a && r <= b) {e[k] = {v, 0, v, 1}; return;}
+	    push(k, l, r); int m = (l + r) >> 1;
+	    assign(a, b, v, k<<1, l, m); assign(a, b, v, k<<1|1, m+1, r); pull(k);
+	}
+	void assign(int a, int b, int v) { assign(a, b, v, 1, 0, SZ - 1); }
+
+	void add(int a, int b, int v, int k, int l, int r) {
+		if (l > b || r < a) return; 
+		if (l >= a && r <= b) {lazy(k, r-l+1, v); return;}
+	    push(k, l, r); int m = (l + r) >> 1; 
+	    add(a, b, v, k<<1, l, m); add(a, b, v, k<<1|1, m + 1, r); pull(k);
+	}
+	void add(int a, int b, int v) { add(a, b, v, 1, 0, SZ - 1); }
+
+	int query(int a, int b, int k, int l, int r) { // change return
+		if (l > b || r < a) return DEF; 
+		if (l >= a && r <= b) return  e[k].mx;
+		push(k, l, r); int m = (l + r) >> 1;
+	    return max(query(a, b, k<<1, l, m), query(a, b, k<<1|1, m + 1, r));
+	}
+	int query(int a, int b) { return query(a, b, 1, 0, SZ - 1); }
+};
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>segmax</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

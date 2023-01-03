@@ -1,0 +1,39 @@
+<snippet>
+	<content><![CDATA[
+
+struct SEG {
+    /* 0-based indexing. Supports Point Update (assignment) + Range Min/Max get_max */
+    struct node { int mx, mn; }; vector<node> e;
+    const static int DEF = 1<<30; int N; // modify DEF
+
+    SEG(int _N) { N = 1 << (int) ceil(log2(_N)); e.resize(2 * N); }
+
+    void init(int v = DEF) { for (int i = 0; i < 2 * SZ; i++) e[i] = {-DEF, DEF}; }
+
+    void assign(int k, int x) {
+        for (k += N, e[k].mx = x, e[k].mn = x, k >>= 1; k > 0; k >>= 1) {
+            e[k].mx = max(e[k<<1].mx, e[k<<1|1].mx); e[k].mn = min(e[k<<1].mn, e[k<<1|1].mn);
+        }
+    }
+
+    int query_min(int l, int r, int mn = DEF) { // change default value
+        for (l += N, r += N; l <= r; l >>= 1, r >>= 1) {
+            if (l & 1) mn = max(mn, e[l++].mn); if (r&1^1) mn = max(mn, e[r--].mn);
+        }
+        return mn;
+    }
+
+    int query_max(int l, int r, int mx = -DEF) { // change default value
+        for (l += N, r += N; l <= r; l >>= 1, r >>= 1) {
+            if (l & 1) mx = max(mx, e[l++].mx); if (r&1^1) mx = max(mx, e[r--].mx);
+        }
+        return mx;
+    }
+};
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>seg</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

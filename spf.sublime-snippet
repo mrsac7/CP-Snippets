@@ -1,0 +1,39 @@
+<snippet>
+	<content><![CDATA[
+
+struct SPF {
+    vector<int> e, primes, t, m;
+    int N;
+
+    SPF(int _N) { N = _N; e.resize(N + 1); init(); }
+
+    void init() {
+        /* m.resize(N + 1); */
+        e[1] = 1;
+        for (int i = 2; i <= N; i++) {
+            if (e[i] == 0) {e[i] = i; primes.push_back(i);}
+            for (int j = 0; i * primes[j] <= N; j++) {
+                e[i * primes[j]] = primes[j]; if (primes[j] == e[i]) break;
+            }
+            /* m[i] = (i / e[i] % e[i] ? 0 : -m[i / e[i]]); */
+        }
+        /* t.resize(N + 1);
+        iota(t.begin(), t.end(), 0);
+        for (int i = 2; i <= N; i++) if (t[i] == i) {
+            for (int j = i; j < t.size(); j += i) t[j] -= t[j] / i;
+        } */
+    }
+
+    int get(int k) { return e[k]; }
+    int phi(int k) { return t[k]; }
+    int mu(int k) {return m[k]; }
+    bool ok(int k) { return (e[k] == k); }
+};
+
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>spf</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
