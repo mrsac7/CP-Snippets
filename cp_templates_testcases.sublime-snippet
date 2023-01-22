@@ -6,16 +6,19 @@ using namespace std;
 #define int long long
 #define endl '\n'
 
-const int MOD = 1e9 + 7;
-const int INF = 1LL << 60;
-
 signed main () {
 	cin.tie(0)->sync_with_stdio(0);
 
-	int TESTS = 1; cin >> TESTS;
-	while (TESTS--) {
-		${0}
-	}
+	#ifdef LOCAL
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+    freopen("error.txt", "w", stderr);
+    #endif
+
+    int _ = 1; cin >> _;
+    while (_--) {
+    	${0}
+    }
 }
 ]]></content>
 	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
